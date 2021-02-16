@@ -16,11 +16,12 @@ MAX_STEPS_TO_EVOLVE = 500
 
 # ------------ MAIN ---------------
 def main():
+    """Main function to for pattern creation with genetic algorithm"""
     population = create_random_population()
     no_improvements_counter = 0
     best_fitness = 0
     best_chromosome = population[0]
-    best_board = Board(best_chromosome, BOUNDING_BOX_HEIGHT, BOUNDING_BOX_WIDTH)
+    best_board = Board(best_chromosome, BOUNDING_BOX_WIDTH)
     for generation in range(0, MAX_GENERATIONS):
         population_fitness_sorted, fitness_sum = calculate_population_fitness(population)
         fitness_max = population_fitness_sorted[-1][1]
@@ -40,6 +41,7 @@ def main():
 
         print("Generation {} \tBest fitness: {}\tBest pattern max_size: {}\tBest pattern lifespan: {}"
               .format(generation + 1, best_fitness, best_board.max_config_size, best_board.lifespan))
+        print("Best chromosome: {}".format(best_chromosome))
 
         if no_improvements_counter >= MAX_GENERATIONS_WITHOUT_IMPROVEMENT:
             print("{} generations without improvements. Will stop".format(no_improvements_counter))
@@ -66,6 +68,7 @@ def main():
                 break
 
         population = population_new
+
     #  print the winner
     print("Total generations {}".format(generation + 1))
     print("Best chromosome {}".format(best_chromosome))
@@ -73,7 +76,7 @@ def main():
     print("Evolving the best pattern up to {} steps...".format(MAX_STEPS_TO_EVOLVE))
     best_board.evolve(MAX_STEPS_TO_EVOLVE)
     best_board.print_data()
-    board = Board(best_chromosome, BOUNDING_BOX_HEIGHT, BOUNDING_BOX_WIDTH)
+    board = Board(best_chromosome, BOUNDING_BOX_WIDTH)
     gui = Gui(board, best_board.lifespan, int(MAX_BOARD_WIDTH / 2))
     tkinter.Button(text="Start", command=lambda: TimerUpdate(gui)).pack()
     gui.window.mainloop()

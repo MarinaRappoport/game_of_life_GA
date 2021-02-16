@@ -9,6 +9,7 @@ CELL_HEIGHT = 5
 
 
 class Gui:
+    """ Class to visualise the board"""
     def __init__(self, board, max_lifespan, margin):
         self.width = board.width + margin*2
         self.height = board.height + margin*2
@@ -34,9 +35,9 @@ class Gui:
 
 
 class TimerUpdate:
+    """ Class to update the gui according to timer"""
     def __init__(self, gui):
         self.gui = gui
-        self.day = 1
         self.update()
 
     def update(self):
@@ -56,15 +57,8 @@ class TimerUpdate:
                         self.gui.canvas.itemconfig(self.gui.item_ids[y][x], fill=color)
 
 
-# res = []
-# for i in range(10):
-#     res.append(np.arange(10*i, 10*(i+1)))
-#
-# res = np.array(res)
-# slice = res[0:res.shape[0],0:res.shape[1]]
-
-pattern = np.fromstring('1 1 1 1 0 1 0 0 1', dtype=int, sep=' ')
-board = Board(pattern, 3, 3)
-gui = Gui(board,300, 50)
-tkinter.Button(text="Start", command=lambda: TimerUpdate(gui)).pack()
-gui.window.mainloop()
+# pattern = np.fromstring('1 1 1 1 0 1 0 0 1', dtype=int, sep=' ')
+# board = Board(pattern, 3)
+# gui = Gui(board,300, 50)
+# tkinter.Button(text="Start", command=lambda: TimerUpdate(gui)).pack()
+# gui.window.mainloop()

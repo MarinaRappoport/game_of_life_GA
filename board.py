@@ -5,9 +5,10 @@ MAX_BOARD_WIDTH = 100
 MAX_BOARD_HEIGHT = 100
 
 
-def game_of_live_rules(x, y, board):
-    is_alive = board[x][y] == 1
-    count = neighbors_count(board, x, y)
+def apply_game_of_life_rules(matrix, x, y, ):
+    """ Game of life rules for 1 cell"""
+    is_alive = matrix[x][y] == 1
+    count = neighbors_count(matrix, x, y)
     if count == 3:
         return 1
     if is_alive and count == 2:
@@ -17,6 +18,7 @@ def game_of_live_rules(x, y, board):
 
 
 def neighbors_count(matrix, x, y):
+    """ Count neighbors of the cell"""
     width = len(matrix[0])
     height = len(matrix)
     neighbours_count = 0
@@ -40,7 +42,8 @@ def neighbors_count(matrix, x, y):
 
 
 class Board:
-    def __init__(self, chromosome, num_rows, num_columns):
+    """ Class that contains all info about the board"""
+    def __init__(self, chromosome, num_columns):
         self.init_config = np.reshape(chromosome, (-1, num_columns))
         self.init_config_size = np.sum(self.init_config)
         self.max_config_size = self.init_config_size
@@ -56,6 +59,7 @@ class Board:
         self.is_cycle = False
 
     def resize_board(self):
+        """ Dynamically add to current board extra margin"""
         init_width = len(self.matrix[0])
         init_height = len(self.matrix)
         if init_width >= MAX_BOARD_WIDTH or init_height >= MAX_BOARD_HEIGHT:
@@ -69,11 +73,12 @@ class Board:
         self.matrix = new_matrix
 
     def update_board(self):
+        """ One step in cellular automata - update all the cells"""
         new_matrix = np.zeros((self.height, self.width), dtype=int)
         need_resize = False
         for x in range(self.height):
             for y in range(self.width):
-                new_matrix[x][y] = game_of_live_rules(x, y, self.matrix)
+                new_matrix[x][y] = apply_game_of_life_rules(self.matrix, x, y)
                 if new_matrix[x][y] and (x == 0 or x == self.height - 1 or y == 0 or y == self.width - 1):
                     need_resize = True
         self.lifespan += 1
@@ -91,10 +96,12 @@ class Board:
             self.resize_board()
 
     def evolve(self, max_steps):
+        """ Evolve the cellular automata up to max steps or until all cells die"""
         while self.current_config_size > 0 and self.lifespan < max_steps and not self.is_cycle:
             self.update_board()
 
     def print_board(self):
+        """For debugging purpose - print current board"""
         for x in range(self.height):
             for y in range(self.width):
                 if self.matrix[x][y] == 1:
@@ -105,6 +112,7 @@ class Board:
                     print("")
 
     def print_pattern(self):
+        """Print initial configuration (pattern)"""
         width = len(self.init_config[0])
         height = len(self.init_config)
         for x in range(height):
@@ -117,6 +125,7 @@ class Board:
                     print("")
 
     def print_data(self):
+        """Print all data about the pattern life"""
         print("Init config size: {}".format(self.init_config_size))
         print("Final config size: {}".format(self.current_config_size))
         print("Max config size: {}".format(self.max_config_size))

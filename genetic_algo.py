@@ -1,3 +1,4 @@
+import math
 import operator
 import random
 
@@ -6,25 +7,27 @@ import numpy as np
 from board import Board
 
 # configuration of automate
-BOUNDING_BOX_WIDTH = 3
-BOUNDING_BOX_HEIGHT = 5
-PROBABILITY_OF_LIVE = 0.3
-STEPS_TO_EVOLVE = 50
+BOUNDING_BOX_WIDTH = 6
+BOUNDING_BOX_HEIGHT = 6
+PROBABILITY_OF_LIVE = 0.2
 
 # configuration of genetic algorithm
 POPULATION_SIZE = 10
 MAX_GENERATIONS = 30
 MAX_GENERATIONS_WITHOUT_IMPROVEMENT = 4
 MUTATION_PROBABILITY = 0.8
-ELITISM_SELECTION = int(round(POPULATION_SIZE * 0.05))
+ELITISM_SELECTION = math.ceil(POPULATION_SIZE * 0.05)
 
-LIFESPAN_FITNESS = 0
-GROWTH_FITNESS = 2
-MAX_GROWTH_FITNESS = 0
+# fintess configuration
+LIFESPAN_FITNESS = 1
+GROWTH_FITNESS = 1
+MAX_GROWTH_FITNESS = 2
+STEPS_TO_EVOLVE = 100
 
 
 # -------------- UTILS ------------------------
 def generate_random_chromosome():
+    """Creates a random binary chromosome of specific size with probability of 1 = PROBABILITY_OF_LIVE"""
     return np.random.choice(a=[1, 0], size=(BOUNDING_BOX_HEIGHT * BOUNDING_BOX_WIDTH),
                             p=[PROBABILITY_OF_LIVE, 1 - PROBABILITY_OF_LIVE])
 
@@ -48,7 +51,7 @@ def calculate_population_fitness(population):
 
 def calculate_fitness(chromosome):
     """Calculates the fitness of a chromosome"""
-    board = Board(chromosome, BOUNDING_BOX_HEIGHT, BOUNDING_BOX_WIDTH)
+    board = Board(chromosome, BOUNDING_BOX_WIDTH)
     board.evolve(STEPS_TO_EVOLVE)
     return board, board.lifespan * LIFESPAN_FITNESS + (board.current_config_size - board.init_config_size) * MAX_GROWTH_FITNESS\
            +board.current_config_size * GROWTH_FITNESS
@@ -92,8 +95,3 @@ def rank_parent_selection(population_fitness_sorted):
         if n < rank:
             return chromosome
         n -= rank
-
-
-p1 = generate_random_chromosome()
-p2 = generate_random_chromosome()
-c1, c2 = crossover(p1, p2)
