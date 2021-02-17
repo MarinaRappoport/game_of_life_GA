@@ -7,9 +7,9 @@ import numpy as np
 from board import Board
 
 # configuration of automate
-BOUNDING_BOX_WIDTH = 6
-BOUNDING_BOX_HEIGHT = 6
-PROBABILITY_OF_LIVE = 0.2
+BOUNDING_BOX_WIDTH = 3
+BOUNDING_BOX_HEIGHT = 4
+PROBABILITY_OF_LIVE = 0.3
 
 # configuration of genetic algorithm
 POPULATION_SIZE = 10
@@ -18,11 +18,10 @@ MAX_GENERATIONS_WITHOUT_IMPROVEMENT = 4
 MUTATION_PROBABILITY = 0.8
 ELITISM_SELECTION = math.ceil(POPULATION_SIZE * 0.05)
 
-# fintess configuration
+# fitness configuration
 LIFESPAN_FITNESS = 1
-GROWTH_FITNESS = 1
-MAX_GROWTH_FITNESS = 2
-STEPS_TO_EVOLVE = 100
+MAX_GROWTH_FITNESS = 1
+STEPS_TO_EVOLVE = 200
 
 
 # -------------- UTILS ------------------------
@@ -53,8 +52,11 @@ def calculate_fitness(chromosome):
     """Calculates the fitness of a chromosome"""
     board = Board(chromosome, BOUNDING_BOX_WIDTH)
     board.evolve(STEPS_TO_EVOLVE)
-    return board, board.lifespan * LIFESPAN_FITNESS + (board.current_config_size - board.init_config_size) * MAX_GROWTH_FITNESS\
-           +board.current_config_size * GROWTH_FITNESS
+    fitness = 0
+    if board.init_config_size > 0:
+        fitness = board.lifespan * LIFESPAN_FITNESS + \
+                  board.max_config_size * MAX_GROWTH_FITNESS / board.init_config_size
+    return board, fitness
 
 
 def mutate(chromosome):
@@ -76,7 +78,7 @@ def roulette_wheel_parent_selection(population_fitness_sorted, fitness_sum):
     """ found parent for next crossover by roulette wheel selection"""
     n = random.uniform(0, fitness_sum)
     for chromosome, fitness, _ in population_fitness_sorted:
-        if n < fitness:
+        if n <= fitness:
             return chromosome
         n -= fitness
 

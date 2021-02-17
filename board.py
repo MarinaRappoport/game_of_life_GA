@@ -126,7 +126,7 @@ class Board:
 
     def print_data(self):
         """Print all data about the pattern life"""
-        print("Init config size: {}".format(self.init_config_size))
-        print("Final config size: {}".format(self.current_config_size))
-        print("Max config size: {}".format(self.max_config_size))
+        print("Initial configuration size: {}".format(self.init_config_size))
+        print("Final configuration size: {}".format(self.current_config_size))
+        print("Max configuration size: {}".format(self.max_config_size))
         print("Lifespan: {}".format(self.lifespan))

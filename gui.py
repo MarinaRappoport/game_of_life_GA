@@ -18,7 +18,7 @@ class Gui:
         matrix = board.matrix
         self.window = tkinter.Tk()
         self.window.title("Methuselah by Marina Rappoport")
-        self.label = tkinter.Label(text="Gen 1")
+        self.label = tkinter.Label(text="Initial pattern")
         self.label.pack()
         self.item_ids = [[0] * self.width for _ in range(self.height)]
         self.canvas = tkinter.Canvas(self.window, height=self.height * CELL_HEIGHT, width=self.width * CELL_WIDTH)
@@ -42,7 +42,7 @@ class TimerUpdate:
 
     def update(self):
         if self.gui.board.lifespan == self.gui.max_lifespan:
-            self.gui.label.config(text="COMPLETE! Step {}".format(self.gui.board.lifespan))
+            self.gui.label.config(text="Step {}".format(self.gui.board.lifespan))
         else:
             self.gui.board.update_board()
             board = self.gui.board
@@ -57,8 +57,13 @@ class TimerUpdate:
                         self.gui.canvas.itemconfig(self.gui.item_ids[y][x], fill=color)
 
 
-# pattern = np.fromstring('1 1 1 1 0 1 0 0 1', dtype=int, sep=' ')
-# board = Board(pattern, 3)
-# gui = Gui(board,300, 50)
-# tkinter.Button(text="Start", command=lambda: TimerUpdate(gui)).pack()
-# gui.window.mainloop()
+def show_evolution_chromosome():
+    """ For debugging and visualisation"""
+    pattern = np.fromstring('1 0 1 1 1 1 1 0 1 1 0 0', dtype=int, sep=' ')
+    board = Board(pattern, 3)
+    gui = Gui(board,200, 50)
+    tkinter.Button(text="Start", command=lambda: TimerUpdate(gui)).pack()
+    gui.window.mainloop()
+
+
+# show_evolution_chromosome()
