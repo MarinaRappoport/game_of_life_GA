@@ -4,7 +4,7 @@ from gui import TimerUpdate, Gui
 from board import Board, MAX_BOARD_WIDTH
 from genetic_algo import create_random_population, MAX_GENERATIONS, calculate_population_fitness, POPULATION_SIZE, \
     MAX_GENERATIONS_WITHOUT_IMPROVEMENT, ELITISM_SELECTION, crossover, mutate, \
-    BOUNDING_BOX_HEIGHT, BOUNDING_BOX_WIDTH, rank_parent_selection, roulette_wheel_parent_selection
+    BOUNDING_BOX_HEIGHT, BOUNDING_BOX_WIDTH, roulette_wheel_parent_selection
 
 # for statistics
 STATS_FITNESS_MAX = []

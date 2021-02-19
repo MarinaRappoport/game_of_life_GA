@@ -57,13 +57,17 @@ class TimerUpdate:
                         self.gui.canvas.itemconfig(self.gui.item_ids[y][x], fill=color)
 
 
-def show_evolution_chromosome():
+def show_evolution_chromosome(to_show, steps):
     """ For debugging and visualisation"""
-    pattern = np.fromstring('1 0 1 1 1 1 1 0 1 1 0 0', dtype=int, sep=' ')
-    board = Board(pattern, 3)
-    gui = Gui(board,200, 50)
-    tkinter.Button(text="Start", command=lambda: TimerUpdate(gui)).pack()
-    gui.window.mainloop()
+    pattern = np.fromstring('1 1 0 1 0 1 0 1 0 1', dtype=int, sep=' ')
+    board = Board(pattern, 2)
+    if to_show:
+        gui = Gui(board,steps, 50)
+        tkinter.Button(text="Start", command=lambda: TimerUpdate(gui)).pack()
+        gui.window.mainloop()
+    else:
+        board.print_pattern()
+        board.evolve(steps)
+        board.print_data()
 
-
-# show_evolution_chromosome()
+# show_evolution_chromosome(True, 50)

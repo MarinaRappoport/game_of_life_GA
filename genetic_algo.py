@@ -8,7 +8,7 @@ from board import Board
 
 # configuration of automate
 BOUNDING_BOX_WIDTH = 3
-BOUNDING_BOX_HEIGHT = 4
+BOUNDING_BOX_HEIGHT = 3
 PROBABILITY_OF_LIVE = 0.3
 
 # configuration of genetic algorithm
@@ -21,7 +21,7 @@ ELITISM_SELECTION = math.ceil(POPULATION_SIZE * 0.05)
 # fitness configuration
 LIFESPAN_FITNESS = 1
 MAX_GROWTH_FITNESS = 1
-STEPS_TO_EVOLVE = 200
+STEPS_TO_EVOLVE = 100
 
 
 # -------------- UTILS ------------------------

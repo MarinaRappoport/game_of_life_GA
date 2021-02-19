@@ -5,6 +5,7 @@ MAX_BOARD_WIDTH = 100
 MAX_BOARD_HEIGHT = 100
 
 
+# ------------- static helper methods ----------
 def apply_game_of_life_rules(matrix, x, y, ):
     """ Game of life rules for 1 cell"""
     is_alive = matrix[x][y] == 1
@@ -49,7 +50,6 @@ class Board:
         self.max_config_size = self.init_config_size
         self.current_config_size = self.init_config_size
         self.lifespan = 0
-        # resize board
         self.matrix = self.init_config
         self.resize_board()
         self.width = len(self.matrix[0])
